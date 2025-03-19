@@ -1,3 +1,4 @@
+using DeliveryFeeCalculator.Core.Enums;
 using DeliveryFeeCalculator.Core.Interfaces;
 using DeliveryFeeCalculator.Core.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -28,11 +29,12 @@ namespace DeliveryFeeCalculator.API.Controllers
         /// <response code="200">Returns the calculated delivery fee</response>
         /// <response code="400">If the vehicle usage is forbidden due to weather conditions</response>
         /// <response code="500">If there was an internal server error</response>
-        [HttpPost("calculate")]
+        [HttpGet("calculate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<DeliveryFeeResponse>> CalculateDeliveryFee([FromBody] DeliveryFeeRequest request)
+        public async Task<ActionResult<DeliveryFeeResponse>> CalculateDeliveryFee(
+            [FromQuery] DeliveryFeeRequest request)
         {
             try
             {

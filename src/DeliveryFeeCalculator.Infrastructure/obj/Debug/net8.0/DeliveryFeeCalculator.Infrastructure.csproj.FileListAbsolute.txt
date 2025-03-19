@@ -1,4 +1,5 @@
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\bin\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.deps.json
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\bin\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.runtimeconfig.json
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\bin\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.dll
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\bin\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.pdb
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\bin\Debug\net8.0\DeliveryFeeCalculator.Core.dll
@@ -8,10 +9,10 @@ C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalcu
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\obj\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.AssemblyInfoInputs.cache
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\obj\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.AssemblyInfo.cs
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\obj\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\obj\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.sourcelink.json
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\obj\Debug\net8.0\Delivery.71769FA6.Up2Date
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\obj\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.dll
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\obj\Debug\net8.0\refint\DeliveryFeeCalculator.Infrastructure.dll
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\obj\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.pdb
-C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\obj\Debug\net8.0\ref\DeliveryFeeCalculator.Infrastructure.dll
-C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\bin\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.runtimeconfig.json
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\obj\Debug\net8.0\DeliveryFeeCalculator.Infrastructure.genruntimeconfig.cache
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Infrastructure\obj\Debug\net8.0\ref\DeliveryFeeCalculator.Infrastructure.dll

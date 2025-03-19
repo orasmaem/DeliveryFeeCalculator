@@ -5,6 +5,7 @@ C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalcu
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Core\obj\Debug\net8.0\DeliveryFeeCalculator.Core.AssemblyInfoInputs.cache
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Core\obj\Debug\net8.0\DeliveryFeeCalculator.Core.AssemblyInfo.cs
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Core\obj\Debug\net8.0\DeliveryFeeCalculator.Core.csproj.CoreCompileInputs.cache
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Core\obj\Debug\net8.0\DeliveryFeeCalculator.Core.sourcelink.json
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Core\obj\Debug\net8.0\DeliveryFeeCalculator.Core.dll
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Core\obj\Debug\net8.0\refint\DeliveryFeeCalculator.Core.dll
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.Core\obj\Debug\net8.0\DeliveryFeeCalculator.Core.pdb

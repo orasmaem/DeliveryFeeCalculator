@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DeliveryFeeCalculator.Core\DeliveryFeeCalculator.Core.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -21,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DeliveryFeeCalculator.Core\DeliveryFeeCalculator.Core.csproj" />
     <ProjectReference Include="..\DeliveryFeeCalculator.Core\DeliveryFeeCalculator.Core.csproj" />
     <ProjectReference Include="..\DeliveryFeeCalculator.Infrastructure\DeliveryFeeCalculator.Infrastructure.csproj" />
   </ItemGroup>
