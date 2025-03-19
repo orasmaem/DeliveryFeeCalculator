@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "7V9poMLA5a8OppGKUfHZUwJ7XeV7Q6TTwYmnaqAhGKE=",
+  "Source": "DeliveryFeeCalculator.API",
+  "BasePath": "_content/DeliveryFeeCalculator.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

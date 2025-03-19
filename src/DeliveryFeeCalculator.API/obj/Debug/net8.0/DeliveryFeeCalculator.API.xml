@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DeliveryFeeCalculator.API</name>
+    </assembly>
+    <members>
+        <member name="M:DeliveryFeeCalculator.API.Controllers.DeliveryFeeController.CalculateDeliveryFee(DeliveryFeeCalculator.Core.Models.DeliveryFeeRequest)">
+            <summary>
+            Calculates the delivery fee based on city and vehicle type
+            </summary>
+            <param name="request">The delivery fee request containing city and vehicle type</param>
+            <returns>The calculated delivery fee or an error message</returns>
+            <response code="200">Returns the calculated delivery fee</response>
+            <response code="400">If the vehicle usage is forbidden due to weather conditions</response>
+            <response code="500">If there was an internal server error</response>
+        </member>
+    </members>
+</doc>
