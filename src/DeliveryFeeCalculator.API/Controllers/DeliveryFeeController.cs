@@ -25,6 +25,7 @@ namespace DeliveryFeeCalculator.API.Controllers
         /// Calculates the delivery fee based on city and vehicle type
         /// </summary>
         /// <param name="request">The delivery fee request containing city and vehicle type</param>
+        /// <param name="useTestData">Optional: Set to true to use test weather data with extreme conditions</param>
         /// <returns>The calculated delivery fee or an error message</returns>
         /// <response code="200">Returns the calculated delivery fee</response>
         /// <response code="400">If the vehicle usage is forbidden due to weather conditions</response>
@@ -34,14 +35,15 @@ namespace DeliveryFeeCalculator.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DeliveryFeeResponse>> CalculateDeliveryFee(
-            [FromQuery] DeliveryFeeRequest request)
+            [FromQuery] DeliveryFeeRequest request,
+            [FromQuery] bool useTestData = false)
         {
             try
             {
-                _logger.LogInformation("Calculating delivery fee for {City} with {VehicleType}", 
-                    request.City, request.VehicleType);
+                _logger.LogInformation("Calculating delivery fee for {City} with {VehicleType}. UseTestData: {UseTestData}", 
+                    request.City, request.VehicleType, useTestData);
                 
-                var response = await _deliveryFeeCalculationService.CalculateDeliveryFeeAsync(request);
+                var response = await _deliveryFeeCalculationService.CalculateDeliveryFeeAsync(request, useTestData);
                 
                 if (!string.IsNullOrEmpty(response.ErrorMessage) && response.ErrorMessage.Contains("forbidden"))
                 {

@@ -4,6 +4,6 @@ namespace DeliveryFeeCalculator.Core.Interfaces
 {
     public interface IDeliveryFeeCalculationService
     {
-        Task<DeliveryFeeResponse> CalculateDeliveryFeeAsync(DeliveryFeeRequest request);
+        Task<DeliveryFeeResponse> CalculateDeliveryFeeAsync(DeliveryFeeRequest request, bool useTestData = false);
     }
 }

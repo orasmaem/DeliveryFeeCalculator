@@ -17,7 +17,7 @@ namespace DeliveryFeeCalculator.Infrastructure.Services
             _logger = logger;
         }
 
-        public async Task<DeliveryFeeResponse> CalculateDeliveryFeeAsync(DeliveryFeeRequest request)
+        public async Task<DeliveryFeeResponse> CalculateDeliveryFeeAsync(DeliveryFeeRequest request, bool useTestData = false)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace DeliveryFeeCalculator.Infrastructure.Services
                 decimal regionalBaseFee = RegionalBaseFeeData.GetBaseFee(request.City, request.VehicleType);
                 
                 // Get the latest weather data for the city
-                var weatherData = await _weatherService.GetLatestWeatherDataForCityAsync(request.City);
+                var weatherData = await _weatherService.GetLatestWeatherDataForCityAsync(request.City, useTestData);
                 
                 if (weatherData == null)
                 {

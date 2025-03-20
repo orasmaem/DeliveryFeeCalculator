@@ -23,14 +23,28 @@ namespace DeliveryFeeCalculator.Infrastructure.Services
             _httpClient = httpClient;
         }
 
-        public async Task<WeatherData?> GetLatestWeatherDataForCityAsync(City city)
+        public async Task<WeatherData?> GetLatestWeatherDataForCityAsync(City city, bool useTestData = false)
         {
-            if (!WeatherStations.CityToStation.Map.TryGetValue(city, out string stationName))
-            {
-                throw new ArgumentException($"Invalid city: {city}");
-            }
+            string stationName;
             
-            _logger.LogInformation("Getting latest weather data for city {City}, station {Station}", city, stationName);
+            if (useTestData)
+            {
+                if (!WeatherStations.CityToStation.TestMap.TryGetValue(city, out string? stationNameResult))
+                {
+                    throw new ArgumentException($"Invalid city for test data: {city}");
+                }
+                stationName = stationNameResult ?? throw new InvalidOperationException($"Station name for test city {city} is null");
+                _logger.LogInformation("Using TEST data for city {City}, station {Station}", city, stationName);
+            }
+            else
+            {
+                if (!WeatherStations.CityToStation.Map.TryGetValue(city, out string? stationNameResult))
+                {
+                    throw new ArgumentException($"Invalid city: {city}");
+                }
+                stationName = stationNameResult ?? throw new InvalidOperationException($"Station name for city {city} is null");
+                _logger.LogInformation("Getting latest weather data for city {City}, station {Station}", city, stationName);
+            }
 
             return await _dbContext.WeatherData
                 .Where(w => w.StationName == stationName)
