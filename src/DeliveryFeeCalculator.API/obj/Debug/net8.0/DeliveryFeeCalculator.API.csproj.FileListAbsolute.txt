@@ -127,3 +127,11 @@ C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalcu
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.API\obj\Debug\net8.0\DeliveryFeeCalculator.API.pdb
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.API\obj\Debug\net8.0\DeliveryFeeCalculator.API.genruntimeconfig.cache
 C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.API\obj\Debug\net8.0\ref\DeliveryFeeCalculator.API.dll
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.API\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.API\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.API\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.API\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.API\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.API\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\mihkelorasmae\Desktop\DotNet\DeliveryFeeCalculator\src\DeliveryFeeCalculator.API\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll

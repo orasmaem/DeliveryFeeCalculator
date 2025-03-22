@@ -2,10 +2,13 @@ using DeliveryFeeCalculator.API.Jobs;
 using DeliveryFeeCalculator.Core.Interfaces;
 using DeliveryFeeCalculator.Infrastructure.Data;
 using DeliveryFeeCalculator.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Quartz;
 using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +38,34 @@ builder.Services.AddSwaggerGen(options =>
         Description = "API for calculating delivery fees based on city, vehicle type, and weather conditions"
     });
 
+    // Define the JWT security scheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+            },
+            new List<string>()
+        }
+    });
+
     // Generate XML documentation for Swagger
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
@@ -47,9 +78,28 @@ builder.Services.AddDbContext<WeatherDbContext>(options =>
 // Add HttpClient for weather data fetching
 builder.Services.AddHttpClient();
 
+// Configure Cookie authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = "Cookies";
+    options.DefaultSignInScheme = "Cookies";
+    options.DefaultChallengeScheme = "Cookies";
+})
+.AddCookie("Cookies", options =>
+{
+    options.Cookie.Name = "DeliveryFeeAuth";
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+    options.LoginPath = "/api/Auth/login";
+    options.LogoutPath = "/api/Auth/logout";
+    options.AccessDeniedPath = "/api/Auth/forbidden";
+    options.SlidingExpiration = true;
+});
+
 // Register services
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IDeliveryFeeCalculationService, DeliveryFeeCalculationService>();
+builder.Services.AddScoped<AuthService>();
 
 // Configure Quartz.NET for scheduled jobs
 builder.Services.AddQuartz(q =>
@@ -113,6 +163,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

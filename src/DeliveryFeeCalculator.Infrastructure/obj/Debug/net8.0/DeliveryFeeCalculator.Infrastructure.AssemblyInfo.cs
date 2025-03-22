@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DeliveryFeeCalculator.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ff8d73b1a3c3ad94d1646636b35154c9d4d62dfd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2eb7e012e4a644eb186a7245c0051beb1d8cfa8e")]
 [assembly: System.Reflection.AssemblyProductAttribute("DeliveryFeeCalculator.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DeliveryFeeCalculator.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

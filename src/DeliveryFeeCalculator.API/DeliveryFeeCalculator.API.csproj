@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DeliveryFeeCalculator.Core\DeliveryFeeCalculator.Core.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -19,10 +20,10 @@
     <PackageReference Include="Quartz" Version="3.8.0" />
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.8.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DeliveryFeeCalculator.Core\DeliveryFeeCalculator.Core.csproj" />
     <ProjectReference Include="..\DeliveryFeeCalculator.Core\DeliveryFeeCalculator.Core.csproj" />
     <ProjectReference Include="..\DeliveryFeeCalculator.Infrastructure\DeliveryFeeCalculator.Infrastructure.csproj" />
   </ItemGroup>
