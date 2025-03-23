@@ -123,26 +123,43 @@ var app = builder.Build();
 // Enable CORS
 app.UseCors("AllowAll");
 
-// Create database and table structure directly
+// Setup the database and seed data
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<WeatherDbContext>();
+    var weatherService = scope.ServiceProvider.GetRequiredService<IWeatherService>();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     
     try
     {
-        logger.LogInformation("Attempting to ensure database is created with all tables");
+        // Database setup - Create tables
+        logger.LogInformation("Setting up database and tables...");
+        
         // Skip migrations and just create the database
         bool created = dbContext.Database.EnsureCreated();
         logger.LogInformation("Database created: {Created}", created);
+
+        // Create weather_data table - this ensures the structure is correct
+        if (created)
+        {
+            logger.LogInformation("New database was created - seeding test data...");
+
+            // Create the weather station test data
+            await SeedTestWeatherData(dbContext, logger);
+        }
         
         // Log the tables that exist in the database
-        var tables = dbContext.Database.ExecuteSqlRaw(@"
-            SELECT table_name 
-            FROM information_schema.tables 
-            WHERE table_schema = 'public'");
-            
-        logger.LogInformation("Database tables check completed");
+        var tableCountSql = @"
+            SELECT COUNT(*) FROM information_schema.tables 
+            WHERE table_schema = 'public' AND table_name = 'WeatherData'";
+        
+        var tableCount = await dbContext.Database.ExecuteSqlRawAsync(tableCountSql);
+        logger.LogInformation("Weather data table exists: {HasTable}", tableCount > 0);
+        
+        // Import initial weather data - ALWAYS do this to ensure we have the latest data
+        logger.LogInformation("Importing live weather data...");
+        await weatherService.ImportWeatherDataAsync();
+        logger.LogInformation("Weather data import completed successfully");
     }
     catch (Exception ex)
     {
@@ -167,30 +184,100 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Run the weather data import job at startup
-using (var scope = app.Services.CreateScope())
+app.Run();
+
+// Define a helper method to seed test weather data
+async Task SeedTestWeatherData(WeatherDbContext dbContext, ILogger logger)
 {
-    var weatherService = scope.ServiceProvider.GetRequiredService<IWeatherService>();
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    
     try
     {
-        logger.LogInformation("Importing initial weather data...");
-        await weatherService.ImportWeatherDataAsync();
-        logger.LogInformation("Initial weather data import completed successfully.");
+        // First, try to delete existing test data in case this is a re-run
+        logger.LogInformation("Removing any existing test weather data...");
+        await dbContext.Database.ExecuteSqlRawAsync(
+            "DELETE FROM \"WeatherData\" WHERE \"StationName\" IN ('Tallinn-Harku-Test', 'Tartu-Tõravere-Test', 'Pärnu-Test')");
+
+        // Insert test data with different conditions
+        logger.LogInformation("Seeding test weather data...");
+        
+        // 1. Cold temperatures (below -10°C) for testing temperature extra fees
+        await dbContext.Database.ExecuteSqlRawAsync(@"
+            INSERT INTO ""WeatherData"" (""StationName"", ""WmoCode"", ""AirTemperature"", ""WindSpeed"", ""WeatherPhenomenon"", ""Timestamp"")
+            VALUES 
+                ('Tallinn-Harku-Test', '26038', -15.0, 5.0, 'Clear', NOW()),
+                ('Tartu-Tõravere-Test', '26242', -12.5, 5.0, 'Clear', NOW()),
+                ('Pärnu-Test', '41803', -18.0, 5.0, 'Clear', NOW())
+        ");
+        
+        // 2. Medium cold temperatures (-10°C to 0°C) for testing temperature extra fees
+        await dbContext.Database.ExecuteSqlRawAsync(@"
+            INSERT INTO ""WeatherData"" (""StationName"", ""WmoCode"", ""AirTemperature"", ""WindSpeed"", ""WeatherPhenomenon"", ""Timestamp"")
+            VALUES 
+                ('Tallinn-Harku-Test', '26038', -5.0, 5.0, 'Clear', NOW() + INTERVAL '1 minute'),
+                ('Tartu-Tõravere-Test', '26242', -8.0, 5.0, 'Clear', NOW() + INTERVAL '1 minute'),
+                ('Pärnu-Test', '41803', -3.0, 5.0, 'Clear', NOW() + INTERVAL '1 minute')
+        ");
+
+        // 3. High wind speeds (10-20 m/s) for testing wind speed extra fees
+        await dbContext.Database.ExecuteSqlRawAsync(@"
+            INSERT INTO ""WeatherData"" (""StationName"", ""WmoCode"", ""AirTemperature"", ""WindSpeed"", ""WeatherPhenomenon"", ""Timestamp"")
+            VALUES 
+                ('Tallinn-Harku-Test', '26038', 5.0, 15.0, 'Clear', NOW() + INTERVAL '2 minutes'),
+                ('Tartu-Tõravere-Test', '26242', 5.0, 12.0, 'Clear', NOW() + INTERVAL '2 minutes'),
+                ('Pärnu-Test', '41803', 5.0, 18.0, 'Clear', NOW() + INTERVAL '2 minutes')
+        ");
+
+        // 4. Extreme wind speeds (>20 m/s) for testing the wind speed prohibition
+        await dbContext.Database.ExecuteSqlRawAsync(@"
+            INSERT INTO ""WeatherData"" (""StationName"", ""WmoCode"", ""AirTemperature"", ""WindSpeed"", ""WeatherPhenomenon"", ""Timestamp"")
+            VALUES 
+                ('Tallinn-Harku-Test', '26038', 5.0, 25.0, 'Clear', NOW() + INTERVAL '3 minutes'),
+                ('Tartu-Tõravere-Test', '26242', 5.0, 22.0, 'Clear', NOW() + INTERVAL '3 minutes'),
+                ('Pärnu-Test', '41803', 5.0, 30.0, 'Clear', NOW() + INTERVAL '3 minutes')
+        ");
+
+        // 5. Snow phenomena for testing weather phenomenon extra fees
+        await dbContext.Database.ExecuteSqlRawAsync(@"
+            INSERT INTO ""WeatherData"" (""StationName"", ""WmoCode"", ""AirTemperature"", ""WindSpeed"", ""WeatherPhenomenon"", ""Timestamp"")
+            VALUES 
+                ('Tallinn-Harku-Test', '26038', 0.0, 5.0, 'Light snow shower', NOW() + INTERVAL '4 minutes'),
+                ('Tartu-Tõravere-Test', '26242', 0.0, 5.0, 'Heavy snowfall', NOW() + INTERVAL '4 minutes'),
+                ('Pärnu-Test', '41803', 0.0, 5.0, 'Light snowfall', NOW() + INTERVAL '4 minutes')
+        ");
+
+        // 6. Rain phenomena for testing weather phenomenon extra fees
+        await dbContext.Database.ExecuteSqlRawAsync(@"
+            INSERT INTO ""WeatherData"" (""StationName"", ""WmoCode"", ""AirTemperature"", ""WindSpeed"", ""WeatherPhenomenon"", ""Timestamp"")
+            VALUES 
+                ('Tallinn-Harku-Test', '26038', 5.0, 5.0, 'Light rain', NOW() + INTERVAL '5 minutes'),
+                ('Tartu-Tõravere-Test', '26242', 5.0, 5.0, 'Moderate rain', NOW() + INTERVAL '5 minutes'),
+                ('Pärnu-Test', '41803', 5.0, 5.0, 'Heavy rain shower', NOW() + INTERVAL '5 minutes')
+        ");
+
+        // 7. Forbidden weather phenomena (glaze, hail, thunder)
+        await dbContext.Database.ExecuteSqlRawAsync(@"
+            INSERT INTO ""WeatherData"" (""StationName"", ""WmoCode"", ""AirTemperature"", ""WindSpeed"", ""WeatherPhenomenon"", ""Timestamp"")
+            VALUES 
+                ('Tallinn-Harku-Test', '26038', 5.0, 5.0, 'Glaze', NOW() + INTERVAL '6 minutes'),
+                ('Tartu-Tõravere-Test', '26242', 5.0, 5.0, 'Hail', NOW() + INTERVAL '6 minutes'),
+                ('Pärnu-Test', '41803', 5.0, 5.0, 'Thunder', NOW() + INTERVAL '6 minutes')
+        ");
+
+        // 8. Example from requirements
+        await dbContext.Database.ExecuteSqlRawAsync(@"
+            INSERT INTO ""WeatherData"" (""StationName"", ""WmoCode"", ""AirTemperature"", ""WindSpeed"", ""WeatherPhenomenon"", ""Timestamp"")
+            VALUES 
+                ('Tartu-Tõravere-Test', '26242', -2.1, 4.7, 'Light snow shower', NOW() + INTERVAL '7 minutes')
+        ");
+
+        logger.LogInformation("Test weather data seeded successfully");
+        
+        // Check how many test records we have
+        var sql = "SELECT COUNT(*) FROM \"WeatherData\" WHERE \"StationName\" LIKE '%-Test'";
+        var count = await dbContext.Database.ExecuteSqlRawAsync(sql);
+        logger.LogInformation("Total test weather data records: {Count}", count);
     }
     catch (Exception ex)
     {
-        logger.LogError(ex, "Error importing initial weather data");
-        // Output detailed error to console for debugging
-        Console.WriteLine($"Error importing initial weather data: {ex.Message}");
-        Console.WriteLine($"Stack trace: {ex.StackTrace}");
-        if (ex.InnerException != null)
-        {
-            Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
-            Console.WriteLine($"Inner stack trace: {ex.InnerException.StackTrace}");
-        }
+        logger.LogError(ex, "Error seeding test weather data");
     }
 }
-
-app.Run();

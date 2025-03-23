@@ -33,6 +33,7 @@ namespace DeliveryFeeCalculator.Infrastructure.Services
                     return new DeliveryFeeResponse 
                     { 
                         Fee = regionalBaseFee,
+                        RegionalBaseFee = regionalBaseFee,
                         ErrorMessage = "Warning: Using base fee only as no weather data is available."
                     };
                 }
@@ -54,9 +55,35 @@ namespace DeliveryFeeCalculator.Infrastructure.Services
                 // Calculate total fee
                 decimal totalFee = regionalBaseFee + extraFeeAirTemperature + extraFeeWindSpeed + extraFeeWeatherPhenomenon;
 
+                // Analyze weather conditions for UI feedback
+                var weatherDetails = new WeatherDetails
+                {
+                    StationName = weatherData.StationName,
+                    Temperature = weatherData.AirTemperature,
+                    WindSpeed = weatherData.WindSpeed,
+                    Phenomenon = weatherData.WeatherPhenomenon,
+                    Timestamp = weatherData.Timestamp,
+                    
+                    // Flag conditions based on thresholds
+                    IsLowTemperature = weatherData.AirTemperature < 0 && weatherData.AirTemperature >= -10,
+                    IsVeryLowTemperature = weatherData.AirTemperature < -10,
+                    IsHighWindSpeed = weatherData.WindSpeed >= 10 && weatherData.WindSpeed <= 20,
+                    IsExtremeWindSpeed = weatherData.WindSpeed > 20,
+                    HasSnowOrSleet = weatherData.WeatherPhenomenon.ToLower().Contains("snow") || weatherData.WeatherPhenomenon.ToLower().Contains("sleet"),
+                    HasRain = weatherData.WeatherPhenomenon.ToLower().Contains("rain"),
+                    HasDangerousPhenomenon = weatherData.WeatherPhenomenon.ToLower().Contains("glaze") || 
+                                           weatherData.WeatherPhenomenon.ToLower().Contains("hail") || 
+                                           weatherData.WeatherPhenomenon.ToLower().Contains("thunder")
+                };
+
                 return new DeliveryFeeResponse
                 {
-                    Fee = totalFee
+                    Fee = totalFee,
+                    RegionalBaseFee = regionalBaseFee,
+                    ExtraFeeTemperature = extraFeeAirTemperature,
+                    ExtraFeeWindSpeed = extraFeeWindSpeed,
+                    ExtraFeeWeatherPhenomenon = extraFeeWeatherPhenomenon,
+                    WeatherDetails = weatherDetails
                 };
             }
             catch (Exception ex)
@@ -69,15 +96,25 @@ namespace DeliveryFeeCalculator.Infrastructure.Services
 
         private decimal CalculateAirTemperatureExtraFee(decimal temperature, VehicleType vehicleType)
         {
+            _logger.LogInformation("Calculating temperature extra fee for {Temperature}°C and {VehicleType}", temperature, vehicleType);
+            
             // Only bikes and scooters get extra fee for low temperature
             if (vehicleType == VehicleType.Car)
                 return 0;
 
             if (temperature < -10)
+            {
+                _logger.LogInformation("Applied temperature rule: Very Cold (below -10°C), ExtraFee=1.0€");
                 return 1.0m;
+            }
+            
             if (temperature < 0)
+            {
+                _logger.LogInformation("Applied temperature rule: Cold (0°C to -10°C), ExtraFee=0.5€");
                 return 0.5m;
+            }
 
+            _logger.LogInformation("No temperature rules applied");
             return 0;
         }
 

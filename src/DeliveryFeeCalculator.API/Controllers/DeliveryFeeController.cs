@@ -45,6 +45,7 @@ namespace DeliveryFeeCalculator.API.Controllers
                         body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
                         .container { max-width: 800px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
                         h1, h2 { text-align: center; }
+                        h3 { margin-top: 20px; font-size: 16px; color: #333; }
                         .user-info { text-align: right; margin-bottom: 20px; }
                         .form-group { margin-bottom: 15px; }
                         label { display: block; margin-bottom: 5px; }
@@ -58,7 +59,10 @@ namespace DeliveryFeeCalculator.API.Controllers
                         .error-message { color: red; font-weight: bold; text-align: center; }
                         .logout { display: inline-block; padding: 5px 10px; background-color: #f44336; color: white; text-decoration: none; border-radius: 3px; }
                         .test-data { margin-top: 10px; }
-                        .weather-info { margin-top: 20px; font-size: 14px; color: #666; }
+                        .weather-info { margin-top: 20px; font-size: 14px; color: #333; }
+                        .weather-info p { margin: 5px 0; }
+                        .weather-info ul { padding-left: 20px; margin: 10px 0; }
+                        .weather-info li { margin-bottom: 5px; }
                     </style>
                 </head>
                 <body>
@@ -135,12 +139,85 @@ namespace DeliveryFeeCalculator.API.Controllers
                                         // Show success result
                                         document.getElementById('feeAmount').textContent = '€' + data.fee.toFixed(2);
                                         
-                                        // Additional weather details can be added here if available
-                                        document.getElementById('weatherDetails').textContent = 
-                                            data.weatherDetails || 'Weather data is reflected in the calculated fee.';
-                                            
+                                        // Display weather details and condition flags
+                                        const weatherDetailsElement = document.getElementById('weatherDetails');
+                                        weatherDetailsElement.innerHTML = '';
+                                        
                                         if (data.errorMessage) {
-                                            document.getElementById('weatherDetails').textContent = data.errorMessage;
+                                            weatherDetailsElement.textContent = data.errorMessage;
+                                        } 
+                                        else if (data.weatherDetails) {
+                                            const wd = data.weatherDetails;
+                                            
+                                            // Create HTML for weather conditions
+                                            const weatherInfo = document.createElement('div');
+                                            
+                                            // Add basic weather data
+                                            weatherInfo.innerHTML = `
+                                                <p><strong>Station:</strong> ${wd.stationName}</p>
+                                                <p><strong>Temperature:</strong> ${wd.temperature.toFixed(1)}°C</p>
+                                                <p><strong>Wind Speed:</strong> ${wd.windSpeed.toFixed(1)} m/s</p>
+                                                <p><strong>Weather Phenomenon:</strong> ${wd.phenomenon || 'None'}</p>
+                                                <p><strong>Timestamp:</strong> ${new Date(wd.timestamp).toLocaleString()}</p>
+                                            `;
+                                            
+                                            // Add fee breakdown
+                                            const feeBreakdown = document.createElement('div');
+                                            feeBreakdown.innerHTML = `
+                                                <h3>Fee Breakdown:</h3>
+                                                <ul>
+                                                    <li>Regional Base Fee: €${data.regionalBaseFee.toFixed(2)}</li>
+                                                    ${data.extraFeeTemperature > 0 ? `<li>Temperature Extra Fee: €${data.extraFeeTemperature.toFixed(2)}</li>` : ''}
+                                                    ${data.extraFeeWindSpeed > 0 ? `<li>Wind Speed Extra Fee: €${data.extraFeeWindSpeed.toFixed(2)}</li>` : ''}
+                                                    ${data.extraFeeWeatherPhenomenon > 0 ? `<li>Weather Phenomenon Extra Fee: €${data.extraFeeWeatherPhenomenon.toFixed(2)}</li>` : ''}
+                                                </ul>
+                                                <p><strong>Total Fee:</strong> €${data.fee.toFixed(2)}</p>
+                                            `;
+                                            
+                                            // Add weather condition explanations if any conditions are flagged
+                                            if (wd.isLowTemperature || wd.isVeryLowTemperature || wd.isHighWindSpeed || 
+                                                wd.isExtremeWindSpeed || wd.hasSnowOrSleet || wd.hasRain || wd.hasDangerousPhenomenon) {
+                                                
+                                                const conditionExplanations = document.createElement('div');
+                                                conditionExplanations.innerHTML = '<h3>Weather Conditions Affecting Fee:</h3><ul>';
+                                                
+                                                if (wd.isLowTemperature) {
+                                                    conditionExplanations.innerHTML += '<li>Cold temperature (0°C to -10°C): Extra fee applied for bike/scooter</li>';
+                                                }
+                                                
+                                                if (wd.isVeryLowTemperature) {
+                                                    conditionExplanations.innerHTML += '<li>Very cold temperature (below -10°C): Higher extra fee applied for bike/scooter</li>';
+                                                }
+                                                
+                                                if (wd.isHighWindSpeed) {
+                                                    conditionExplanations.innerHTML += '<li>High wind speed (10-20 m/s): Extra fee applied for bike</li>';
+                                                }
+                                                
+                                                if (wd.isExtremeWindSpeed) {
+                                                    conditionExplanations.innerHTML += '<li>Extreme wind speed (above 20 m/s): Bike usage prohibited</li>';
+                                                }
+                                                
+                                                if (wd.hasSnowOrSleet) {
+                                                    conditionExplanations.innerHTML += '<li>Snow or sleet: Extra fee applied for bike/scooter</li>';
+                                                }
+                                                
+                                                if (wd.hasRain) {
+                                                    conditionExplanations.innerHTML += '<li>Rain: Extra fee applied for bike/scooter</li>';
+                                                }
+                                                
+                                                if (wd.hasDangerousPhenomenon) {
+                                                    conditionExplanations.innerHTML += '<li>Dangerous weather phenomenon (glaze, hail, or thunder): Bike/scooter usage prohibited</li>';
+                                                }
+                                                
+                                                conditionExplanations.innerHTML += '</ul>';
+                                                weatherInfo.appendChild(conditionExplanations);
+                                            }
+                                            
+                                            weatherInfo.appendChild(feeBreakdown);
+                                            weatherDetailsElement.appendChild(weatherInfo);
+                                        } 
+                                        else {
+                                            weatherDetailsElement.textContent = 'Weather data is reflected in the calculated fee.';
                                         }
                                         
                                         document.getElementById('resultSuccess').style.display = 'block';

@@ -13,6 +13,7 @@ namespace DeliveryFeeCalculator.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Weather data configuration
             modelBuilder.Entity<WeatherData>(entity =>
             {
                 entity.HasKey(e => e.Id);
