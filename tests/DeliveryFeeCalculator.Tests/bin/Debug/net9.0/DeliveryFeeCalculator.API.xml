@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DeliveryFeeCalculator.API</name>
+    </assembly>
+    <members>
+        <member name="M:DeliveryFeeCalculator.API.Controllers.AuthController.LoginPage">
+            <summary>
+            Login page
+            </summary>
+            <returns>Login form</returns>
+        </member>
+        <member name="M:DeliveryFeeCalculator.API.Controllers.AuthController.Login(System.String,System.String)">
+            <summary>
+            Login to authenticate user
+            </summary>
+            <param name="username">User's username</param>
+            <param name="password">User's password</param>
+            <returns>Redirect to delivery fee calculator on success</returns>
+            <response code="302">Redirects to calculator on successful login</response>
+            <response code="401">If the credentials are invalid</response>
+        </member>
+        <member name="M:DeliveryFeeCalculator.API.Controllers.AuthController.Logout">
+            <summary>
+            Logout and clear authentication
+            </summary>
+            <returns>Redirect to login page</returns>
+        </member>
+        <member name="M:DeliveryFeeCalculator.API.Controllers.AuthController.Forbidden">
+            <summary>
+            Access denied page
+            </summary>
+            <returns>Access denied message</returns>
+        </member>
+        <member name="M:DeliveryFeeCalculator.API.Controllers.DeliveryFeeController.CalculatorPage">
+            <summary>
+            Web-based calculator page
+            </summary>
+            <returns>HTML page with calculator form</returns>
+        </member>
+        <member name="M:DeliveryFeeCalculator.API.Controllers.DeliveryFeeController.CalculateDeliveryFee(DeliveryFeeCalculator.Core.Models.DeliveryFeeRequest,System.Boolean)">
+            <summary>
+            Calculates the delivery fee based on city and vehicle type
+            </summary>
+            <param name="request">The delivery fee request containing city and vehicle type</param>
+            <param name="useTestData">Optional: Set to true to use test weather data with extreme conditions</param>
+            <returns>The calculated delivery fee or an error message</returns>
+            <response code="200">Returns the calculated delivery fee</response>
+            <response code="400">If the vehicle usage is forbidden due to weather conditions</response>
+            <response code="500">If there was an internal server error</response>
+        </member>
+    </members>
+</doc>

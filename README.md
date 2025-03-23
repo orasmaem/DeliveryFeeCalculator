@@ -1,20 +1,58 @@
 # Delivery Fee Calculator
 
-This application calculates delivery fees for food couriers based on regional base fees, vehicle types, and weather conditions. The calculator retrieves real-time weather data from the Estonian Environment Agency and applies business rules to determine delivery fees.
+Calculates delivery fees based on location, vehicle type, and weather conditions using real-time data from Estonian Environment Agency.
 
-## Technologies Used
 
-- .NET 8.0
-- C#
-- Entity Framework Core
-- PostgreSQL
-- Quartz.NET for scheduled tasks
-- ASP.NET Core Web API
 
-## Project Structure
+## Setup
 
-- **DeliveryFeeCalculator.API**: Web API project containing controllers and scheduled job setup
-- **DeliveryFeeCalculator.Core**: Core domain models, interfaces, and business logic
-- **DeliveryFeeCalculator.Infrastructure**: Implementation of services, database context, and data access
+### Database
+1. Install PostgreSQL
+2. Create database: `DeliveryFeeCalculator`
+3. The sqripts to create the database and test data are in the main folder.
+4. Default connection string in `appsettings.json`:
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Host=localhost;Port=5432;Database=DeliveryFeeCalculator;Username=postgres;Password=sql"
+}
+```
+
+### Build & Run
+```
+dotnet restore
+dotnet build
+cd src/DeliveryFeeCalculator.API
+dotnet run
+
+App runs at `http://localhost:5001`
+
+### Database Setup
+
+- Script to create the WeatherData tablw is in create_weather_data_table.sql
+- Run: "dotnet ef database update"
+- Test data for extreme weather conditions is in insert_test_weather_data.sql
+
+
+## Authentication
+1. Authentication page: `POST http://localhost:5001/api/Auth/login`
+   - Username: `admin`
+   - Password: `admin123`
+
+
+## API Documentation
+Swagger UI: `http://localhost:5001/swagger/index.html`
+
+-There you can test different functionalities.
+
+
+### Background Jobs
+Weather data updates hourly (configurable in `appsettings.json`)
+
+## Testing
+
+cd tests/DeliveryFeeCalculator.Tests
+dotnet test
+
+
 
 

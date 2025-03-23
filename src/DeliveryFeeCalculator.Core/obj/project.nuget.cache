@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Vq29S/Y6JSE=",
+  "dgSpecHash": "4vDDzdyyQow=",
   "success": true,
   "projectFilePath": "C:\\Users\\mihkelorasmae\\Desktop\\DotNet\\DeliveryFeeCalculator\\src\\DeliveryFeeCalculator.Core\\DeliveryFeeCalculator.Core.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\mihkelorasmae\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.13\\microsoft.netcore.app.ref.8.0.13.nupkg.sha512",
-    "C:\\Users\\mihkelorasmae\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.13\\microsoft.windowsdesktop.app.ref.8.0.13.nupkg.sha512",
-    "C:\\Users\\mihkelorasmae\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.13\\microsoft.aspnetcore.app.ref.8.0.13.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

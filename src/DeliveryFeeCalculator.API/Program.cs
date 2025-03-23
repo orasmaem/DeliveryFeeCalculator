@@ -99,7 +99,7 @@ builder.Services.AddAuthentication(options =>
 // Register services
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IDeliveryFeeCalculationService, DeliveryFeeCalculationService>();
-builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Configure Quartz.NET for scheduled jobs
 builder.Services.AddQuartz(q =>

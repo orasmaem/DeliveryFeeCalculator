@@ -1,5 +1,5 @@
+using DeliveryFeeCalculator.Core.Interfaces;
 using DeliveryFeeCalculator.Core.Models;
-using DeliveryFeeCalculator.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,24 +10,18 @@ namespace DeliveryFeeCalculator.API.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
         private readonly ILogger<AuthController> _logger;
 
-        public AuthController(AuthService authService, ILogger<AuthController> logger)
+        public AuthController(IAuthService authService, ILogger<AuthController> logger)
         {
             _authService = authService;
             _logger = logger;
         }
-
-        /// <summary>
-        /// Login page
-        /// </summary>
-        /// <returns>Login form</returns>
         [HttpGet("login")]
         [AllowAnonymous]
         public IActionResult LoginPage()
         {
-            // Return a simple login page if accessed via browser
             return Content(@"
                 <!DOCTYPE html>
                 <html>

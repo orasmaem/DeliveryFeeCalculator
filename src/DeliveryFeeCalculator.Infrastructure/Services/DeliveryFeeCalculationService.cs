@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace DeliveryFeeCalculator.Infrastructure.Services
 {
+    /// <summary>
+    /// Service for calculating delivery fees based on city, vehicle type, and weather conditions
+    /// </summary>
     public class DeliveryFeeCalculationService : IDeliveryFeeCalculationService
     {
         private readonly IWeatherService _weatherService;
@@ -17,6 +20,7 @@ namespace DeliveryFeeCalculator.Infrastructure.Services
             _logger = logger;
         }
 
+        /// <inheritdoc />
         public async Task<DeliveryFeeResponse> CalculateDeliveryFeeAsync(DeliveryFeeRequest request, bool useTestData = false)
         {
             try
